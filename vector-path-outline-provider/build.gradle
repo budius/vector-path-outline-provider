@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.8.0'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+
+}
+
+apply from: 'https://raw.githubusercontent.com/sensorberg-dev/gradle-scripts/master/common-def.gradle'
+apply plugin: "com.vanniktech.maven.publish"
+mavenPublish {
+    targets {
+        uploadArchives {
+            signing = false
+            releaseRepositoryUrl = findProperty("VECTOR_OUTLINE_PROVIDER_URL", null)
+            repositoryUsername = findProperty("MAVEN_JCENTER_USERNAME", null)
+            repositoryPassword = findProperty("MAVEN_JCENTER_PASSWORD", null)
+        }
+    }
+}
